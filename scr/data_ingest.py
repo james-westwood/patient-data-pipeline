@@ -4,11 +4,10 @@ This module is used to ingest data from the data source into the database.
 
 import duckdb as db
 import pandas as pd
-from fhir.resources.patient import Patient
 import os
 import logging
 import json
-import re
+
 
 
 #create logger
@@ -49,7 +48,7 @@ for file_name in os.listdir(data_path):
     if os.path.isfile(os.path.join(data_path, file_name)) and file_name.endswith('.json'):
         json_files.append(os.path.join(data_path, file_name))
 
-def read_json(json_files):
+def read_patient_records(json_files):
     """
     Reads patient data from json files returns a list of patient objects.
     """
@@ -72,38 +71,3 @@ def read_json(json_files):
     
     return patient_json_lst
 
-
-
-
-
-
-# Run the read_json function
-patient_records = read_json(json_files)
-
-# Get the fhir.resources.patient.Patient object into a table ready for database
-def table_maker(patient_record_list):
-    """Makes list of pateint records into a table"""
-    # Make a list of dictionaries to store the patient data
-    patient_table = []
-    for i, patient in enumerate(patient_records):
-        # Get the patient data
-        patient_data = patient.dict()
-        # Add the patient data to the list of dictionaries
-        patient_table.append(patient_data)
-        # Log progress through loop
-        logger.info(f"Made patient {i} of {len(patient_records)} into a table")
-    return patient_table
-
-
-# table_maker(patient_records)
-
-
-
-
-# # read in the parquet file using duckdb
-# logger.info('Reading in patient data from parquet file. Should be fast...')
-# tic = time.perf_counter()
-# conn.execute("CREATE TABLE patient FROM '../data/patient.parquet'")
-# toc = time.perf_counter()
-# time_elapsed = toc - tic
-# logger.info("Time elapsed for parquet reading: " + str(time_elapsed) + " seconds")
