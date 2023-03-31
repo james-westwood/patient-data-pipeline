@@ -3,6 +3,14 @@
 from fhir.resources.patient import Patient
 from typing import List, Dict, Tuple
 import pandas as pd
+import re
+import logging
+
+# set up logger
+logger = logging.getLogger(__name__)
+# set log level and format, writing out to console
+logger.setLevel(logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 def extract_from_json(patient_data: dict) -> dict:
     """Extracts the useful data from the patient data from 'extension' section.
@@ -10,6 +18,9 @@ def extract_from_json(patient_data: dict) -> dict:
     The data is about birth and race"""
 
     results_dict = {
+    # Get the UUID of the patient from id
+    "UUID": patient_data['id'],
+        
     # Extract the value of the "birth_sex" extension from the patient data.
     'birth_sex': patient_data['extension'][3]['valueCode'],
 
