@@ -1,4 +1,9 @@
+Name: pat-dat311
+Channels:
+  - defaults
+  - conda-forge
 dependencies:
+  - python=3.11
   - jupyter
   - numpy
   - pylint
