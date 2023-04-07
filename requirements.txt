@@ -1,0 +1,6 @@
+jupyter
+numpy
+pylint
+duckdb
+pandas
+fhir.resources
