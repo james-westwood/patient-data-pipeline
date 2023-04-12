@@ -6,7 +6,7 @@ import os
 
 # define data out folder
 data_out = "data/data_out"
-parquet_file = "data/data_out/patient_data.parquet"
+
 
 def read_parquet(parquet_file=parquet_file):
     "Read parquet file into a duckdb.DuckDBPyRelation."
