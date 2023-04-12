@@ -25,7 +25,7 @@ if __name__ == '__main__':
                         JOIN pid_df_2 ON pid_df_1.UUID = pid_df_2.UUID 
                         JOIN address_df ON pid_df_1.UUID = address_df.UUID""")
         # write the pid_db to parquet
-        dm.write_to_parquet(pid_db)
+        do.write_to_parquet(pid_db)
     else:
         # Read the parquet file into a duckdb relation
         pid_db = dm.read_parquet()
@@ -33,8 +33,15 @@ if __name__ == '__main__':
     # Make a connection to the database
     conn = db.connect("data/database/patient_data.db", read_only=False)
     
-    conn.execute("""SELECT COUNT(*)
-                FROM 'data/data_out/patient_data.parquet'
-                """).fetchall()
+    # conn.execute("""SELECT COUNT(*)
+    #             FROM 'data/data_out/patient_data.parquet'
+    #             """).fetchall()
     
-    print(pid_db)
+    # print(pid_db)
+
+    # Create a streamlit app
+    st.set_page_config(layout="wide")
+    
+    st.title('Testing')
+    
+    st.write('Testing write')    
