@@ -4,3 +4,4 @@ pylint
 duckdb
 pandas
 fhir.resources
+streamlit
