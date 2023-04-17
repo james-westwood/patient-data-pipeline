@@ -4,6 +4,9 @@
 
 from src.data_ingest import read_patient_records
 
+# Change directory to the root of the project
+os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 def test_read_patient_records():
     # Define a temporary JSON file with test data
     import tempfile
