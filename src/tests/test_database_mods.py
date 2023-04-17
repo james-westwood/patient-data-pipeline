@@ -1,11 +1,7 @@
 import pytest
 import duckdb
 from src.database_mod import read_parquet, check_parquet
-import os
 
-
-# Change working directory to the root of the project
-# os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 @pytest.fixture(scope="module")
 def test_db():
