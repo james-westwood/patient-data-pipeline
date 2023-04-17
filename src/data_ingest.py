@@ -37,6 +37,8 @@ Plan:
 """
 
 
+# Change directory to the root of the project
+os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Make a list of all the json files
