@@ -16,39 +16,61 @@ if __name__ == '__main__':
         pid_data, birth_data, address_data = dp.parse_patient_data(all_records)
         
         # Make dataframes
-        pid_df_1 = dp.df_maker(pid_data)
-        pid_df_2 = dp.df_maker(birth_data)
+        pid_df = dp.df_maker(pid_data)
+        birth_df = dp.df_maker(birth_data)
         address_df = dp.df_maker(address_data)
+             
+        # Make a connection to the database
+        conn = db.connect("data/database/patient_data.db", read_only=False)
+        
+        # Write each df to sql table
+        conn.execute('CREATE OR REPLACE TABLE pid_data_table AS SELECT * FROM pid_df')
+        conn.execute('CREATE OR REPLACE TABLE birth_data_table AS SELECT * FROM birth_df')
+        conn.execute('CREATE OR REPLACE TABLE address_data_table AS SELECT * FROM address_df')
         
         # join the pid_df_1, pid_df_2 and address_df using duckdb
-        pid_db = db.sql("""
-                        SELECT * FROM pid_df_1 
-                        JOIN pid_df_2 ON pid_df_1.UUID = pid_df_2.UUID 
-                        JOIN address_df ON pid_df_1.UUID = address_df.UUID""")
+        conn.sql("""CREATE TABLE all_PID_records AS SELECT *
+                    FROM pid_data_table""")
         
-        # drop the UUID_2 and UUID_3 columns from pid_db
-        pid_db = pid_db.drop(['UUID_2', 'UUID_3'])
+       
         
-        # write the pid_db to parquet
-        do.write_to_parquet(pid_db)
-    else:
-        # Read the parquet file into a duckdb relation
-        pid_db = dm.read_parquet()
-    
+
     # Make a connection to the database
     conn = db.connect("data/database/patient_data.db", read_only=False)
     
-    query = """CREATE OR REPLACE TABLE patient_data
-                AS SELECT *
-                FROM 'data/data_out/patient_data.parquet'
-            """
-    
-    conn.execute(query)
-    
+    # Get the data as a dataframe
+    pat_dat_df = conn.execute("SELECT * FROM patient_data").df()
 
-    # # Create a streamlit app
-    # st.set_page_config(layout="wide")
+
+    # Create a streamlit app
+    st.set_page_config(layout="wide")
     
-    # st.title('Testing')
+    st.title('Testing')
     
-    # st.write('Testing write')    
+    st.write('Testing write')  
+    
+    # st.subheader("City filter")
+    
+    # Display the table
+    st.dataframe(pat_dat_df)
+    
+    # col_a1, col_a2 = st.columns(2)  
+    
+    # with col_a1: 
+    #     birth_cities_df = conn.execute("""
+    #     SELECT 
+    #         DISTINCT birthCity 
+    #     FROM patient_data 
+    #     ORDER BY birthCity
+    # """).df()
+    
+    # with col_a2:
+    #     startingAirports_df = conn.execute("""
+    #     SELECT 
+    #         DISTINCT city 
+    #     FROM patient_data 
+    #     ORDER BY city
+    # """).df()
+        
+    # birthcityselect = st.selectbox('Birth City', birth_cities_df)
+    # livecityselect = st.selectbox('Live City', startingAirports_df)
