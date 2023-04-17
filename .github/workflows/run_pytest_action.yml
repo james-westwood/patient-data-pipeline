@@ -19,6 +19,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run tests
-        working-directory: ~/patient-data-pipeline
+        working-directory: /home/runner/work/patient-data-pipeline/
         run: |
           pytest
