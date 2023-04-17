@@ -5,3 +5,4 @@ duckdb
 pandas
 fhir.resources
 streamlit
+pytest
