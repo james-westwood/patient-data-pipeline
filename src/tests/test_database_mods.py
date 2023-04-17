@@ -1,6 +1,11 @@
 import pytest
 import duckdb
 from src.database_mod import read_parquet, check_parquet
+import os
+
+
+print(f"This is the CWD : {os.getcwd()} !!!!!!!!!!!!!!!!!!!!!!!!")
+print(os.environ)
 
 @pytest.fixture(scope="module")
 def test_db():

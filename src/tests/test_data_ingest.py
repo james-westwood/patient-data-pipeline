@@ -2,6 +2,8 @@
     Test scripts for data_ingest
 """
 
+import os
+
 from src.data_ingest import read_patient_records
 
 # Change directory to the root of the project
@@ -17,7 +19,7 @@ def test_read_patient_records():
             "entry": [{
                 "resource": {
                     "id": "1",
-                    "name": {"family": "Doe", "given": ["John"]},
+                    "name": {"family": "Westwood", "given": ["James"]},
                     "gender": "male",
                     "birthDate": "1970-01-01"
                 }
@@ -39,8 +41,8 @@ def test_read_patient_records():
 
     # Check that the values are correct
     assert patient_json["id"] == "1"
-    assert patient_json["name"]["family"] == "Doe"
-    assert patient_json["name"]["given"] == ["John"]
+    assert patient_json["name"]["family"] == "Westwood"
+    assert patient_json["name"]["given"] == ["James"]
     assert patient_json["gender"] == "male"
     assert patient_json["birthDate"] == "1970-01-01"
 

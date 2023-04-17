@@ -21,9 +21,14 @@ if __name__ == '__main__':
         address_df = dp.df_maker(address_data)
         
         # join the pid_df_1, pid_df_2 and address_df using duckdb
-        pid_db = db.sql("""SELECT * FROM pid_df_1 
+        pid_db = db.sql("""
+                        SELECT * FROM pid_df_1 
                         JOIN pid_df_2 ON pid_df_1.UUID = pid_df_2.UUID 
                         JOIN address_df ON pid_df_1.UUID = address_df.UUID""")
+        
+        # drop the UUID_2 and UUID_3 columns from pid_db
+        pid_db = pid_db.drop(['UUID_2', 'UUID_3'])
+        
         # write the pid_db to parquet
         do.write_to_parquet(pid_db)
     else:
@@ -33,15 +38,17 @@ if __name__ == '__main__':
     # Make a connection to the database
     conn = db.connect("data/database/patient_data.db", read_only=False)
     
-    # conn.execute("""SELECT COUNT(*)
-    #             FROM 'data/data_out/patient_data.parquet'
-    #             """).fetchall()
+    query = """CREATE OR REPLACE TABLE patient_data
+                AS SELECT *
+                FROM 'data/data_out/patient_data.parquet'
+            """
     
-    # print(pid_db)
+    conn.execute(query)
+    
 
-    # Create a streamlit app
-    st.set_page_config(layout="wide")
+    # # Create a streamlit app
+    # st.set_page_config(layout="wide")
     
-    st.title('Testing')
+    # st.title('Testing')
     
-    st.write('Testing write')    
+    # st.write('Testing write')    
