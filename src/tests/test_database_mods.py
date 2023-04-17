@@ -26,9 +26,9 @@ def test_check_parquet_exists():
     exists = check_parquet(check_path=parquet_file)
     assert exists == True
     
-# def test_check_parquet_not_exists():
-#     """Test that check_parquet returns False if the Parquet file does not exist."""
-#     parquet_file = "src/tests/fake.parquet"
-#     exists = check_parquet(check_path=parquet_file)
-#     assert exists == False
+def test_check_parquet_not_exists():
+    """Test that check_parquet returns False if the Parquet file does not exist."""
+    parquet_file = "tests/fake.parquet"
+    exists = check_parquet(check_path=parquet_file)
+    assert exists == False
 
