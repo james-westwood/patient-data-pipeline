@@ -60,15 +60,20 @@ def read_patient_records(json_files):
     
     # Loop through the json files
     for i, json_file in enumerate(json_files):
-        with open(json_file, encoding="utf-8") as f:
-            all_records = json.load(f)
-            patient_json = all_records["entry"][0]["resource"]
-            
-            # Get UUID 
-            uuid = patient_json['id']
-            
-            # Put the patient data into a list
-            patient_json_lst[i] = patient_json
+        try:
+            with open(json_file, encoding="utf-8") as f:
+                all_records = json.load(f)
+                patient_json = all_records["entry"][0]["resource"]
+
+                # Get UUID 
+                uuid = patient_json['id']
+
+                # Put the patient data into a list
+                patient_json_lst[i] = patient_json
+        except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+            # Catch any exceptions that may occur
+            print(f"An error occurred while reading {json_file}: {e}")
+
 
     
     return patient_json_lst
